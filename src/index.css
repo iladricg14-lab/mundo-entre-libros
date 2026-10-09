@@ -758,6 +758,101 @@ p { line-height: 1.8; }
   }
 }
 
+
+/* ========================================
+   AJUSTES RESPONSIVOS PARA CELULARES
+   MUNDO ENTRE LIBROS
+======================================== */
+
+@media (max-width: 767px) {
+
+  /* Espacio lateral de las secciones */
+  .nosotros-section,
+  .club-lectura-section {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  /* Separación del contenido respecto
+     a los bordes del celular */
+  .nosotros-section > .container,
+  .club-lectura-section > .container {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Evitar que las filas de Bootstrap
+     invadan el espacio lateral */
+  .nosotros-section .row,
+  .club-lectura-section .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* Mantener las columnas dentro
+     del ancho disponible */
+  .nosotros-section .row > [class*="col-"],
+  .club-lectura-section .row > [class*="col-"] {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Títulos adaptados al celular */
+  .nosotros-titulo {
+    font-size: clamp(1.7rem, 7vw, 2.1rem);
+    line-height: 1.3;
+    overflow-wrap: break-word;
+  }
+
+  .club-titulo {
+    font-size: clamp(1.7rem, 7vw, 2.1rem);
+    line-height: 1.3;
+    overflow-wrap: break-word;
+  }
+
+  /* Textos cómodos para leer */
+  .nosotros-texto,
+  .club-texto {
+    font-size: 1rem;
+    line-height: 1.8;
+    overflow-wrap: break-word;
+  }
+
+  .club-descripcion {
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  /* Evitar imágenes demasiado anchas */
+  .nosotros-imagen,
+  .club-imagen {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Evitar que los botones se desborden */
+  .btn-unirse-club {
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  /* Ajustar tarjetas y frases destacadas */
+  .nosotros-frase,
+  .valor-card,
+  .club-beneficios {
+    max-width: 100%;
+  }
+}
+
+
 /* FONDO ESPACIAL EN TODA LA PÁGINA */
 .app-container { position: relative; min-height: 100vh; }
 .universo-fondo, .universo-estrellas {
