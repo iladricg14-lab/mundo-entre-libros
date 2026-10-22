@@ -282,3 +282,48 @@
   }
 
 }
+
+/* PAGINACIÓN COMPACTA */
+
+.catalogo-section .catalogo-paginas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.catalogo-section .pagina-puntos {
+  color: #ffd54d;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+@media (max-width: 767px) {
+  .catalogo-section .catalogo-paginacion {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .catalogo-section .catalogo-paginas {
+    order: -1;
+    width: 100%;
+    gap: 5px;
+  }
+
+  .catalogo-section .pagina-boton {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 0.85rem;
+  }
+
+  .catalogo-section .pagina-puntos {
+    font-size: 0.85rem;
+    padding: 0 2px;
+  }
+}
+

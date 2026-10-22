@@ -12,14 +12,12 @@ function Catalogo() {
 
   const resultadosRef = useRef(null);
 
-  // MOSTRAR SOLO LIBROS DISPONIBLES
-  
-const librosDisponibles = libros.filter(
-  (libro) => libro.disponible === true
-);
+  // LIBROS DISPONIBLES
+  const librosDisponibles = libros.filter(
+    (libro) => libro.disponible === true
+  );
 
-
-  // OBTENER CATEGORÍAS
+  // CATEGORÍAS
   const categorias = [
     "Todas",
     ...new Set(
@@ -58,13 +56,13 @@ const librosDisponibles = libros.filter(
     }
   );
 
-  // CALCULAR TOTAL DE PÁGINAS
+  // TOTAL DE PÁGINAS
   const totalPaginas = Math.max(
     1,
     Math.ceil(librosFiltrados.length / LIBROS_POR_PAGINA)
   );
 
-  // OBTENER LIBROS DE LA PÁGINA ACTUAL
+  // LIBROS DE LA PÁGINA ACTUAL
   const indiceInicial =
     (paginaActual - 1) * LIBROS_POR_PAGINA;
 
@@ -73,7 +71,7 @@ const librosDisponibles = libros.filter(
     indiceInicial + LIBROS_POR_PAGINA
   );
 
-  // RANGO DE LIBROS MOSTRADOS
+  // CONTADOR
   const primerLibro =
     librosFiltrados.length === 0 ? 0 : indiceInicial + 1;
 
@@ -82,13 +80,13 @@ const librosDisponibles = libros.filter(
     librosFiltrados.length
   );
 
-  // ACTUALIZAR BÚSQUEDA
+  // MANEJAR BÚSQUEDA
   const manejarBusqueda = (evento) => {
     setBusqueda(evento.target.value);
     setPaginaActual(1);
   };
 
-  // ACTUALIZAR CATEGORÍA
+  // MANEJAR CATEGORÍAS
   const manejarCategoria = (evento) => {
     setCategoria(evento.target.value);
     setPaginaActual(1);
@@ -106,18 +104,42 @@ const librosDisponibles = libros.filter(
 
     setPaginaActual(numeroPagina);
 
-    // Regresar al inicio de los resultados
     resultadosRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
 
-  // NÚMEROS DE PÁGINA
-  const paginas = Array.from(
-    { length: totalPaginas },
-    (_, indice) => indice + 1
-  );
+  // PAGINACIÓN COMPACTA
+  const paginasVisibles = [
+    1,
+    totalPaginas,
+    paginaActual - 1,
+    paginaActual,
+    paginaActual + 1,
+  ]
+    .filter(
+      (numero) =>
+        numero >= 1 && numero <= totalPaginas
+    )
+    .filter(
+      (numero, indice, arreglo) =>
+        arreglo.indexOf(numero) === indice
+    )
+    .sort((a, b) => a - b);
+
+  const paginasCompactas = [];
+
+  paginasVisibles.forEach((numero, indice) => {
+    if (
+      indice > 0 &&
+      numero - paginasVisibles[indice - 1] > 1
+    ) {
+      paginasCompactas.push("...");
+    }
+
+    paginasCompactas.push(numero);
+  });
 
   return (
     <section
@@ -128,7 +150,6 @@ const librosDisponibles = libros.filter(
 
         {/* ENCABEZADO */}
         <div className="text-center mb-5">
-
           <h2 className="catalogo-titulo">
             ✨ Explora nuestro universo literario
           </h2>
@@ -136,16 +157,13 @@ const librosDisponibles = libros.filter(
           <p className="catalogo-subtitulo">
             Encuentra tu próxima lectura favorita
           </p>
-
         </div>
 
         {/* BUSCADOR Y FILTROS */}
         <div className="row g-3 mb-4">
 
-          {/* BUSCADOR */}
           <div className="col-md-8">
             <div className="input-group">
-
               <span className="input-group-text">
                 <i className="bi bi-search"></i>
               </span>
@@ -158,28 +176,22 @@ const librosDisponibles = libros.filter(
                 value={busqueda}
                 onChange={manejarBusqueda}
               />
-
             </div>
           </div>
 
-          {/* FILTRO POR CATEGORÍA */}
           <div className="col-md-4">
-
             <select
               className="form-select"
               aria-label="Filtrar por categoría"
               value={categoria}
               onChange={manejarCategoria}
             >
-
               {categorias.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
               ))}
-
             </select>
-
           </div>
 
         </div>
@@ -189,7 +201,6 @@ const librosDisponibles = libros.filter(
           ref={resultadosRef}
           className="catalogo-resultados-info"
         >
-
           <p className="resultados-texto mb-0">
             {librosFiltrados.length}{" "}
             {librosFiltrados.length === 1
@@ -202,27 +213,22 @@ const librosDisponibles = libros.filter(
               Mostrando {primerLibro}–{ultimoLibro}
             </span>
           )}
-
         </div>
 
-        {/* TARJETAS DE LIBROS */}
+        {/* TARJETAS */}
         {librosPagina.length > 0 ? (
-
           <>
             <div className="row g-4">
-
               {librosPagina.map((libro) => (
                 <BookCard
                   key={libro.id}
                   libro={libro}
                 />
               ))}
-
             </div>
 
             {/* PAGINACIÓN */}
             {totalPaginas > 1 && (
-
               <nav
                 className="catalogo-paginacion"
                 aria-label="Páginas del catálogo"
@@ -241,36 +247,41 @@ const librosDisponibles = libros.filter(
                   Anterior
                 </button>
 
-                {/* NÚMEROS DE PÁGINA */}
+                {/* NÚMEROS Y PUNTOS */}
                 <div className="catalogo-paginas">
-
-                  {paginas.map((numero) => (
-
-                    <button
-                      key={numero}
-                      type="button"
-                      className={
-                        `btn pagina-boton ${
-                          paginaActual === numero
-                            ? "pagina-activa"
-                            : ""
-                        }`
-                      }
-                      onClick={() =>
-                        cambiarPagina(numero)
-                      }
-                      aria-label={`Ir a página ${numero}`}
-                      aria-current={
-                        paginaActual === numero
-                          ? "page"
-                          : undefined
-                      }
-                    >
-                      {numero}
-                    </button>
-
-                  ))}
-
+                  {paginasCompactas.map(
+                    (numero, indice) =>
+                      numero === "..." ? (
+                        <span
+                          key={`puntos-${indice}`}
+                          className="pagina-puntos"
+                          aria-hidden="true"
+                        >
+                          ...
+                        </span>
+                      ) : (
+                        <button
+                          key={numero}
+                          type="button"
+                          className={`btn pagina-boton ${
+                            paginaActual === numero
+                              ? "pagina-activa"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            cambiarPagina(numero)
+                          }
+                          aria-label={`Ir a página ${numero}`}
+                          aria-current={
+                            paginaActual === numero
+                              ? "page"
+                              : undefined
+                          }
+                        >
+                          {numero}
+                        </button>
+                      )
+                  )}
                 </div>
 
                 {/* SIGUIENTE */}
@@ -289,24 +300,17 @@ const librosDisponibles = libros.filter(
                 </button>
 
               </nav>
-
             )}
 
             {/* INDICADOR */}
             {totalPaginas > 1 && (
-
               <p className="catalogo-pagina-texto">
                 Página {paginaActual} de {totalPaginas}
               </p>
-
             )}
           </>
-
         ) : (
-
-          /* SIN RESULTADOS */
           <div className="text-center py-5">
-
             <i className="bi bi-search fs-1"></i>
 
             <h4 className="mt-3">
@@ -316,9 +320,7 @@ const librosDisponibles = libros.filter(
             <p>
               Prueba con otra búsqueda o categoría.
             </p>
-
           </div>
-
         )}
 
       </div>
