@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import libros from "../data/libros.json";
 import BookCard from "./BookCard";
 
-const LIBROS_POR_PAGINA = 12;
+const LIBROS_POR_PAGINA = 8;
 
 function Catalogo() {
   const [busqueda, setBusqueda] = useState("");

@@ -16,7 +16,8 @@ function BookCard({ libro }) {
 
   return (
     <>
-      <div className="col-12 col-sm-6 col-lg-4 col-xl-3">
+    
+<div className="col-6 col-sm-6 col-lg-4 col-xl-3">
         <div className="card libro-card h-100">
           <div className="libro-imagen">
             {sinPortada ? portadaProvisional() : (
